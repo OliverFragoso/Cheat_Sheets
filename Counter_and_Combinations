@@ -1,0 +1,8 @@
+# Count number of times that are one element in the array
+from collections import Counter 
+num_counts = Counter(array)
+
+#Combinations
+from itertools import combinations
+combs = combinations(array,#of combinations)
+print([*combs])
