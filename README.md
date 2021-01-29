@@ -1,2 +1,1 @@
-# Combining_Counting
-Count the elementos within an array efficiently. Set tuples with the elements of an array efficiently
+This are the pieces of lines of code that I think might be useful for my day to day working as Data Analayst/Data Scientist (I hope). 
