@@ -1,0 +1,8 @@
+# Set is a collection of distinct elements this means that can not be duplicates
+
+set_a.difference(set_b) = elements that are present in set_a but not in set_b
+set_a.intersection(set_b)
+set_a.symmetric_difference(set_b) = elements that exists in exactly one of the sets but not both 
+set_a.union(set_b)
+
+element in set_a = membership testing is much faster and efficient
