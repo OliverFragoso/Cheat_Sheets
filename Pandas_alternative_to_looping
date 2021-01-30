@@ -1,0 +1,17 @@
+#Iterating a data frame with Iterrows()
+for i, row in df.iterrows():
+  print(i,row)
+
+#Iterating a data frame with Itertuples()
+for row in df.itertuples():
+  print(row.Index)
+  print(row.row_name)
+  
+#Apply
+results =  df.apply(lambda row: row['name1'] + row['name2'],axis=0/1)
+df['resp'] = results
+
+#Run differential
+#Because Pandas is builded on Numpy, we ca use the broadcasting advantage
+df['new_col'] = df['col_name1'].values + df['col_name2'].values
+df['new_col'] = some_function(df['col_name1'].values,df['col_name2'].values)
