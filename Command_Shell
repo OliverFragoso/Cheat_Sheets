@@ -1,0 +1,17 @@
+~ = /home/repl --> el home directory
+
+COPY:
+  cp <direccion o file> <destino>
+    example:
+      1) cp seasonal/summer.csv backup/summer.bck --> existe summer.csv y se copia en la carpeta
+                                                   backup y se nombre summer.bck
+      2) cp seasonal/spring.csv seasonal/summer.csv backup --> los csv spring y summer se están
+                                                               copiando al mismo tiempo en backup
+
+DELETE:
+  rm <file1> <file2> ...
+  rm -r puede hacer lo mismo que rmdir
+  rmdir <directory> --> sólo borra carpetas que están vacias
+    example:
+      
+  
