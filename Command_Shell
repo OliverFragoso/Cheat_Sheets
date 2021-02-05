@@ -12,6 +12,81 @@ DELETE:
   rm <file1> <file2> ...
   rm -r puede hacer lo mismo que rmdir
   rmdir <directory> --> sólo borra carpetas que están vacias
-    example:
+
+LESS: muestra un docuemnto largo hoja por hoja. ":n" lleva al siguiente documento. ":p" lleva al documento previo. ":q"
+      nos saca de la visualización
       
+      less <documento1> <documento2> ...
+      example:
+        less seasonal/spring.csv seasonal/summer.csv --> se muestran 2 documentos en ese orden
+
+HEAD: muestra las prineras 10 líneas de un documento
+  head <documento>
+  head -n <número de lineas> <documento>
+    example:
+      head -n 3 seasonal/summer.csv
+      
+TAIL: muestra las últimos líneas de un documento
+  tail <documento>
+  tail -n +7 <documento> --> muestra de la 6ta linea en adelante
+      
+ls -R -F: hace una visualización de las carpetas y lo que contienen de manera organizada
+  ls -R -F <ruta o caprpeta actual>
+  example:
+    ls -R -F ~/Documents
+    
+MAN: muestra la descripción de un comando
+  man <comando>
+  example:
+    man head --> despliega la descripción y sus parámetros
+    
+CUT: seleccionar líneas de un documento
+  cut -f 2-5,8 -d , values.csv --> selecciona las columnas 2 hasta la 5 y la columna 8
+                                   -f significa 'fields' que es para especificar columnas
+                                   -d especifica el separador de columnas, en este caso es ','
+
+HISTORY: muestra los comando que se han utilizado recientemente
+  1) usa history 
+  2) !<número> --> el numero que tenga el comando que quieras volver a correr
+    exmaple: !4 o !head
+
+GREP: takes a piece of text followed by one or more filenames and prints all of the lines in those files that contain that text
+  grep <palabra> <doumento1> <documento2> ...
+  common flags:
+    -c: print a count of matching lines rather than the lines themselves
+    -h: do not print the names of files when searching multiple files
+    -i: ignore case (e.g., treat "Regression" and "regression" as matches)
+    -l: print the names of files that contain matches, not the matches
+    -n: print line numbers for matching lines
+    -v: invert the match, i.e., only show lines that don't match
+    
+    example:
+      grep bicuspid seasonal/winter.csv --> prints lines from winter.csv that contain "bicuspid"
+      grep -v -n molar seasonal/winter.csv --> enumera y muestra las líneas que no contengan la palbra molar
+ 
+PASTE: combina documentos en lugar de cortarlos 
+  paste -d <delimiter> -s -z <documento1> <documento2>
+    -s: pega línea por línea y no paralelo
+    -z: es NULL la última línea y no un salto de línea
+
+" > ": guarda el output de un comando usado en el tipo de documento que le indiqes csv o txt
+  head -n 5 seasonal/summer.csv > top.csv --> guarda en "top.csv" las primeras 5 líneas del documento summer.csv
   
+" | ": enviar el output de un comando como input para otro comando
+    example:
+      head -n 5 seasonal/summer.csv | tail -n 3 --> primero se obtienen los primeros 5 registros y luego a esos sólo se usan
+                                                    los últimos 3
+      
+      cut -d , -f 2 seasonal/summer.csv | grep -v Tooth | head -n 1 --> se selecciona la 2da columna, se hace busqueda invertida
+                                                                        para quitar el título de la columna y se selecciona el 
+                                                                        primer dato
+                                                                        
+WC : prints the number of characters, words, and lines in a file. You can make it print only one of these using -c, -w, or -l respectively
+  wc -l <documento>
+  
+" * ": este wildcard te ayuda a matchear todo los documentos que estén un un repositorio o que cumplan una característica y así
+       no se tenga que escribir la misma ruta muchas veces
+       cut -d , -f 1 seasonal/*  or cut -d , -f 1 seasonal/*.csv --> ambos comandos toman la primera fila de TODOS los csv que
+                                                                     estén presentes en la carpeta 'seasonal'
+     
+    
