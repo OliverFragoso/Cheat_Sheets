@@ -84,9 +84,27 @@ PASTE: combina documentos en lugar de cortarlos
 WC : prints the number of characters, words, and lines in a file. You can make it print only one of these using -c, -w, or -l respectively
   wc -l <documento>
   
-" * ": este wildcard te ayuda a matchear todo los documentos que estén un un repositorio o que cumplan una característica y así
+" * " zero or more matches: este wildcard te ayuda a matchear todo los documentos que estén un un repositorio o que cumplan una característica y así
        no se tenga que escribir la misma ruta muchas veces
        cut -d , -f 1 seasonal/*  or cut -d , -f 1 seasonal/*.csv --> ambos comandos toman la primera fila de TODOS los csv que
                                                                      estén presentes en la carpeta 'seasonal'
+                                                                     
+"?": matches a single character, so 201?.txt will match 2017.txt or 2018.txt, but not 2017-01.txt.
+"[...]": matches any one of the characters inside the square brackets, so 201[78].txt matches 2017.txt or 2018.txt, but not 2016.txt.
+"{...}": matches any of the comma-separated patterns inside the curly brackets, so {*.txt, *.csv} matches any file whose name ends with .txt or .csv, but not 
+         files whose names end with .pdf
+         
+SORT: sort puts data in order. By default it does this in ascending alphabetical order, but the flags -n and -r can be used to sort numerically and reverse
+      the order of its output, while -b tells it to ignore leading blanks and -f tells it to fold case (i.e., be case-insensitive)
+      
+      example: 
+        cut -d , -f 2 seasonal/summer.csv | grep -v Tooth | sort -r --> ordena los nombres de la Z hacia abajo
+        
+UNIQ: whose job is to remove duplicated lines. More specifically, it removes adjacent duplicated lines. Tienen que estar seguiditos los duplicados
+      porque sino no los quita
+      
+      cut -d , -f 2 seasonal/winter.csv | grep -v Tooth | sort | uniq -c --> Se selecciona la 2da columna, se hace búsqueda invertida para quitar el título
+                                                                             de la columna, se ordena para dejar seguiditos los duplicados y se aplica uniq
+                                                                             con -c para que aparezca el conteo de la veces que apareció
      
     
