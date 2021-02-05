@@ -107,4 +107,18 @@ UNIQ: whose job is to remove duplicated lines. More specifically, it removes adj
                                                                              de la columna, se ordena para dejar seguiditos los duplicados y se aplica uniq
                                                                              con -c para que aparezca el conteo de la veces que apareció
      
+SHELL VARIABLES
+To create a shell variable, you simply assign a value to a name. Without any spaces before or after the = sign. Once you have done this, 
+you can check the variable's value with: echo $training
+  training=seasonal/summer.csv
+  head -n 1 $training
+  
+FOR LOOPS IN SHELL
+  for filetype in gif jpg png; do echo $filetype; done
+  
+  for filename in seasonal/*.csv; do echo $filename; done --> imprime los nombres de los documentos en la carpeta people
+  
+  files=seasonal/*.csv
+  for f in $files; do echo $f; done --> así es más eficiente que el código de arriba
+ 
     
