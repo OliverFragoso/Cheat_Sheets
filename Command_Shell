@@ -120,5 +120,36 @@ FOR LOOPS IN SHELL
   
   files=seasonal/*.csv
   for f in $files; do echo $f; done --> así es más eficiente que el código de arriba
- 
+  
+  #How can I do many things in a single loop:
+    for f in seasonal/*.csv; do echo $f; head -n 2 $f | tail -n 1; done
     
+NANO COMMANDS
+  Ctrl + K: delete a line.
+  Ctrl + U: un-delete a line.
+  Ctrl + O: save the file ('O' stands for 'output'). You will also need to press Enter to confirm the filename!
+  Ctrl + X: exit the editor. 
+  
+  Guardar cambios hechos a un documento:
+    Ctrl o, ENTER, Ctrl x
+    
+
+HOW CAN I PASS FILENAMES TO SCRIPTS
+To support this, you can use the special expression $@ (dollar sign immediately followed by at-sign) to mean "all of the command-line parameters given 
+to the script"
+$@ --> va dentro del código en donde podría tomas lugar un filename, y a la hora de correr el bash sería así:
+  bash unique-lines.sh seasonal/summer.csv seasonal/autumn.csv --> en este caso puede procesar 2 documentos a la vez, summer.csv y autum.csv
+    sort $@ | uniq --> porque este es el código que contine unique-lines.sh
+    
+  As well as $@, the shell lets you use $1, $2, and so on to refer to specific command-line parameters.
+    cut -d , -f $2 $1 -->código de column.sh donde $2 es la columna y $1 es el documento
+    bash column.sh seasonal/autumn.csv 1 --> enviando autum.csv como documento y 1 como la columna
+    
+
+LOOPS IN THE SHELL SCRIPT
+  # Print the first and last data records of each file.
+    for filename in $@
+    do
+      head -n 2 $filename | tail -n 1
+      tail -n 1 $filename
+    done
