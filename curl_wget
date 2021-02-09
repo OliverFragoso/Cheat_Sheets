@@ -1,0 +1,64 @@
+DOWNLOADING A SINGLE FILE
+  # Use curl to download the file from the redirected URL
+  curl -L https://assets.datacamp.com/production/repositories/4180/datasets/eb1d6a36fa3039e4e00064797e1a1600d267b135/201812SpotifyData.zip
+  
+  # Download and rename the file in the same step
+  curl -L -o Spotify201812.zip https://assets.datacamp.com/production/repositories/4180/datasets/eb1d6a36fa3039e4e00064797e1a1600d267b135/201812SpotifyData.zip
+    -o --> permite renombrar un documento "Spotify201812.zip" es el nuevo nombre
+    -O deja el nombre original, por lo tanto después sólo va la URL
+    
+WILDCARDS
+  *
+    # Download all 100 data files
+    curl -O https://s3.amazonaws.com/assets.datacamp.com/production/repositories/4180/datasets/files/datafile*.txt
+    
+  []
+    # Download all 100 data files
+    curl -O https://s3.amazonaws.com/assets.datacamp.com/production/repositories/4180/datasets/files/datafile[001-100].txt --> 100 docs ordenados secuencialmente
+
+    # Print all downloaded files to directory
+    ls datafile*.txt
+    
+WGET
+ Example1:
+ # Fill in the two option flags 
+  wget -cb https://assets.datacamp.com/production/repositories/4180/datasets/eb1d6a36fa3039e4e00064797e1a1600d267b135/201812SpotifyData.zip
+    -c --> Resume broken download
+    -b --> Go to background immediately after startup
+
+  # Verify that the Spotify file has been downloaded
+  ls 
+
+  # Preview the log file 
+  cat wget-log
+  
+  EXAMPLE 2:
+  # View url_list.txt to verify content
+  cat url_list.txt --> un documento de txt que contiene la URLs a descargar
+
+  # Create a mandatory 1 second pause between downloading all files in url_list.txt
+   wget --wait=1 -i url_list.txt
+    -i --> se utiliza para indicarle a wget que las URLs se leén de un documento externo
+    --wait = como son documentos pequeños, se indica que entre cada descarga se espero 1 segundo para no llenar el servidor de requests
+    --limit-rate={rate}k convertira rate a bytes/segundo, entonces si pones 200, quiere decir que la descarga no debe rebasar los 
+                         200kilobytes por segundo
+
+  # Take a look at all files downloaded
+  ls
+  
+  EXAMPLE 3: using curl and wget
+    # Use curl, download and rename a single file from URL
+      curl -o Spotify201812.zip -L https://assets.datacamp.com/production/repositories/4180/datasets/eb1d6a36fa3039e4e00064797e1a1600d267b135/201812SpotifyData.zip
+
+      # Unzip, delete, then re-name to Spotify201812.csv
+      unzip Spotify201812.zip && rm Spotify201812.zip
+      mv 201812SpotifyData.csv Spotify201812.csv
+
+      # View url_list.txt to verify content
+      cat url_list.txt
+
+      # Use Wget, limit the download rate to 2500 KB/s, download all files in url_list.txt
+      wget --limit-rate=2500k -i url_list.txt
+
+      # Take a look at all files downloaded
+      ls
