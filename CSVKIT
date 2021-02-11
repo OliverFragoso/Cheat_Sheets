@@ -1,0 +1,86 @@
+CONVERTING FILES TO CSV
+  in2csv:
+    in2csv <datasource.xlsx> > <output.csv> --> se tiene que usar '>' en medio de los documentos para indicar que es un output
+   
+  in2csv <--names> or <-n> <datasource.xlsx>: despliega el nombre de las diferentes hojas que pueda contener el documento Excel
+  
+  in2csv <datasource.xlsx> --sheet <"sheet_name"> > <output.csv>  --> conviertes específicamente la hoja que necesitas
+  
+DATA PREVIEW IN THE COMMAND LINE
+  csvlook -h --> shows the documentation
+  
+  csvlook <output.csv> --> shows the preview of the data
+
+DESCRIPTIVE STATS
+  csvstat: prints mean,median, unique values, and counts
+    csvstat <output.csv>
+    
+FILTERING DATA
+  csvcut:filters data using column name or position
+    
+    csvcut -h --> documentation
+    
+    --names or -n  option to print all column names
+      csvcut -n <file.csv>
+    
+    csvcut -c 1 <file.csv> --> returns the firs column, by position
+    
+    csvcut -c "column_name" <file.csv> --> returns the column by name
+    
+    csvcut -c 2,3 <file.csv> --> returns more tha one column by position (note: there's no space between 2 and 3)
+    
+    csvcut -c "column_name","column_name" <file.csv> --> returns more tha one column by name (note: there's no space between column names)
+    
+  csvgreo: filters data by row value through exact match, pattern matching or even regex
+    -m: followed by the exact row value to filter
+      csvgrep -c "column_name" -m <exact_value_to_find> <file.csv>
+        csvgrep -c "track_id" -m 123 Spotify.csv --> encuentra en 'Spotify.csv' donde el 'track_id' sea '123'
+        
+        csvgrep -c 1 -m 123 Spotify.csv --> encuentra en 'Spotify.csv' donde la columna '1' sea '123'
+    -r: followed with a regex pattern
+    -f followed by the path to a file
+
+  STACKING MULTIPLE CSV FILES
+    csvstack: stacks up the rows two or more csv files
+      csvstack <file1.csv> <file2.csv>... > <outputfile.csv>
+    
+    -g to keep a record of the source of the data row 
+    csvstack -g "file1","file2" <file1.csv> <file2.csv> > <outputfile.csv> --> la columna creada por default se llama 'group'
+    csvstack -g "file1","file2" -n "column_name" <file1.csv> <file2.csv> > <outputfile.csv> --> la columna creada ahora se llamará "column_name"
+    
+CHAINING COMMAND LINE COMMANDS
+  ';' Links commands together and runs sequencially
+    csvlook <file1.csv>; csvstat <file1.csv> --> we get the preview of the file and the stats sequencially 
+  '&&' Also links commands together but only runs the 2nd command of the 1st succeeds
+    csvlook <file1.csv> && csvstat <file1.csv>
+  '|' uses the output of the 1st command as output to the 2nd
+    csvcut -c "column_name1","column_name2" <file.csv> | csvlook
+    
+PULLING DATA FROM DATABASES
+  sql2csv --db "sqlite:///SpotifyDatabase.db" \  -->establishing database connection
+          --query "SELECT * FROM table" \ -->querying against the database. Write query in one line, no matter how long or complex the query
+          > <output.csv>
+  
+  sql2csv -v this will help you debug should an error arise!
+  
+  csvsql: applies SQL statements to one or more csv files
+    csvsql --query "SELECT * FROM <filename> LIMIT 1" <filename.csv> | csvlook --> sólo queremos obtener la primera fila del documento csv
+    
+    csvsql --query "SELECT * FROM <filename1> INNER JOIN <filename2>..." <filename1.csv> <filename2.csv> | csvlook --> hasta joins podemos hacer
+    
+    #Usando shell variables
+      # Store SQL query as shell variable
+      sqlquery="SELECT * FROM Spotify_MusicAttributes ORDER BY duration_ms LIMIT 1"
+
+      # Apply SQL query to Spotify_MusicAttributes.csv
+      csvsql --query "$sqlquery" Spotify_MusicAttributes.csv
+     
+PUSHING DATA BACK TO DATABASE
+  csvsql --db "sqlite:///Spotifydatabase.db" \
+         --insert <file.csv>  --> se inserta el file.csv en la base de datos y se crea automáticamente la tabla y se hace la mejor inferencia de
+                                  los tipos de variables, etc.
+
+  csvsql --no-inference --no-constraints \ -->no-inference toma todo los campos como text, no-constraints no pone length limits
+         --db "sqlite:///SpotifyDatabase.db" \
+         --insert SpotifyDatabase.csv 
+                          
