@@ -63,6 +63,7 @@ GREP: takes a piece of text followed by one or more filenames and prints all of 
     example:
       grep bicuspid seasonal/winter.csv --> prints lines from winter.csv that contain "bicuspid"
       grep -v -n molar seasonal/winter.csv --> enumera y muestra las líneas que no contengan la palbra molar
+      grep 'word1\|word2' --> Another option to grep two strings
  
 PASTE: combina documentos en lugar de cortarlos 
   paste -d <delimiter> -s -z <documento1> <documento2>
