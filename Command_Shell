@@ -64,7 +64,110 @@ GREP: takes a piece of text followed by one or more filenames and prints all of 
       grep bicuspid seasonal/winter.csv --> prints lines from winter.csv that contain "bicuspid"
       grep -v -n molar seasonal/winter.csv --> enumera y muestra las líneas que no contengan la palbra molar
       grep 'word1\|word2' --> Another option to grep two strings
- 
+
+SED: corre comandos de REGEX, como substituir o borrar
+  s --> substituir
+  g --> global y significa que se aplique a toda la línea
+  d --> borra la línea completa que contenga el pattern que pongas y se pone al final, a diferencia de 's' que 
+        va al inicio
+  2,3 o cualquier número en lugar de 'g' --> empieza a substituir desde el # que pongas
+    * sed "s/foo/bar/g" inputfile > outputfile --> substituye 'foo' y en su lugar pon 'bar' en toda la línea
+    
+    * sed "s/foo/bar/2" inputfile > outputfile --> substituye la segunda coincidencia
+    * sed "s/foo/bar/2g" inputfile > outputfile --> substituye desde la segunda coincidencia toda la línea
+    
+    * Sed Expressions
+      $ : matches the end of a line
+      ^ : matches the start of a line
+      * : matches zero or more occurrences of the previous character
+      [ ] : any characters within the brackets will be matched
+        - sed "s/ca[tnr]/dog/g" inputfile > outputfile --> "cat", "can", and "car" to "dog"
+        
+        - sed "s/[0-9][0-9]*//g" inputfile > outputfile -->  the first [0-9] ensures that at least one digit
+                                                             must be matched. . The second [0-9] may be missing
+                                                             or may be present any number of times. Finally, 
+                                                             the digits are removed because there is nothing 
+                                                             between the second and third slashes where you can 
+                                                             put your replacement text
+        
+        - echo dogs cats and dogs | sed "s/^dogs/doggy/" --> Sed matches only if the text is at the start of the 
+                                                             line.
+
+        - echo dogs cats and cats | sed "s/cats$/kitty/" --> Sed to match the text only if it is at the end of the 
+                                                             line.
+    * sed "/cat/d" testfile > newtestfile --> borra la línea que contenga 'cat'
+    * sed "/^$/d" inputfile > outputfile --> borra la lineas que no tengan nada al inicio y nada al final (borra
+                                             líneas vacías)
+    
+    * Controlling Printing: Suppose you want to print certain lines and suppress the rest. That is, instead of specifying 
+      which lines to delete using "d", you want specify which lines to keep.
+       - This can be done with two features:
+         1) Specify the -n option, which means "do not print lines by default".
+         2) End the pattern with "p" to print the line matched by the patter
+          
+          - sed -n "s/Mrs\./Ms/p" testfile --> cambia 'Mrs.' por 'Ms' y muestra las líneas que cambiaron
+    
+    * Multiple Patterns: Sed can be passed more than one operation at a time. We can do this by specifying each pattern 
+      after an -e option.
+       - echo Gnus eat grass | sed -e "s/Gnus/Penguins/" -e "s/grass/fish/" --> resultado 'Penguins eat fish' 
+    
+    * Controlling Edits With Patterns : We can also be more specific about which lines a pattern gets applied to.  By 
+                                        supplying a pattern before the operation, you restrict the operation to lines that
+                                        have that pattern.
+      - cat testfile --> tenemos un file llamado 'testfile' y se muestra su contenido
+              one: number
+              two: number
+              three: number
+              four: number
+              one: number
+              three: number
+              two: number
+      - sed "/one/ s/number/1/" testfile > testchangedfile --> en la línea que contenga 'one' substituye 'number' por '1'
+      - cat testchangedfile --> se muestra el output del comando anterior
+              one 1
+              two: number
+              three: number
+              four: number
+              one: 1
+              three: number
+              two: number
+       -  This works with multiple patterns
+          - sed -e "/one/ s/number/1/" -e "/two/ s/number/2/" -e "/three/ s/number/3/" -e "/four/ s/number/4/" \
+            < testfile > testchangedfile
+          - cat testchangedfile --> se muestra el output del comando anterior
+              one: 1
+              two: 2
+              three: 3
+              four: 4
+              one: 1
+              three: 3
+              two: 2  
+              
+    * Controlling Edits With Line Numbers: Instead of specifying patterns that can operate on any line, we can specify an 
+      exactline or range of lines to edit. 
+          - cat testfile --> tenemos un file llamado 'testfile' y se muestra su contenido
+              even number
+              odd number
+              odd number
+              even number
+          - sed -e "2,3 s/number/1/" -e "1 s/number/2/" < testfile > testchangedfile --> En la fila 2,3 cambia la 'number'
+                                                                                         por un '1', después en la línea
+                                                                                         1 cambia 'number' por un 2
+          - cat testchangedfile --> se muestra el output del comando anterior
+              even 2
+              odd 1
+              odd 1
+          - añadir '$' a un rango significa que desde ese rango hasta el final del documento aplicar el comando
+            - sed "25,$ s/number/1/" < testfile > testchangedfile --> desde la línea 25 hasta la línea final substituir 
+                                                                      'number' por 1
+    * Scripting SED commands: By using the -f argument to the sed command, you can feed Sed a list of commands to run. 
+                              For example, if you put the following patterns in a file called sedcommands:
+          - s/foo/bar/g
+            s/dog/cat/g
+            s/tree/house/g
+            s/little/big/g
+          - sed -f sedcommands < inputfile > outputfile        
+
 PASTE: combina documentos en lugar de cortarlos 
   paste -d <delimiter> -s -z <documento1> <documento2>
     -s: pega línea por línea y no paralelo
