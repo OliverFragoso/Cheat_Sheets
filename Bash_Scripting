@@ -1,0 +1,64 @@
+Arguments
+  2> -->STDERR to be deleted, si hay un error borralo
+  1> --> STDOUT, toma como output 
+  
+  - cat sports.txt 1> new_sports.txt --> el contenido de 'sports.txt' pegalo en 'new_sports.txt'
+  - $@/$* --> regresa todos los argumentos que obtiene el bash
+  - $# --> regresa el número de argumentos
+    EXAMPLE: se tiene el 'args.sh' y su contenido es:
+      - #!/usr/bash
+          echo $1
+          echo $2
+          echo $@
+          echo "there are " $# "arguments"
+      - bash args.sh one two three four five --> correrlo en la terminal
+      - el output que obtenemos:
+        one
+        two
+        one two three four five
+        there are 5 arguments
+        
+Basic Variables 
+  - Assign variable
+    var1="Moon" --> no debe tener espacios
+  - Access variable
+    echo $var1
+  - '' single quotes: Shell interprets what is been literally
+        Example:
+        now_var='now'
+        now_var_singlequote='$now_var'
+        echo $now_var_singlequote --> $now_var
+        
+  - "" double quotes: Shell interprets literally except using '$' and backticks
+        Example:
+        now_var='now'
+        now_var_doublequote="$now_var"
+        echo $now_var_doublequote --> now
+        
+  - `` backticks: Shell runs the command and captures STDOUT back into the variable
+        Example:
+        right_now_backticks="The date is `date`" --> date es un comando por sí solo
+        right_now_parentesis="The date is $(date)" --> date es un comando por sí solo
+        echo $right_now_backticks
+        echo $right_now_parentesis--> ambos dan el mismo resultado sólo que el uso de parentesis
+                                      es más nuevo y tiene más ventajas
+                                      
+Numeric Variables
+  - expr --> sirve para hacer aritmetica en la terminal. No sirve con decimale
+    EXAMPLE:
+      expr 1+4 --> 5
+  - bc --> basic calculator, escribe 'quit' para salir
+    * se pueden hacer operaciones sin tener que ejecutarlo de manera directa
+      echo "5+7.5" | bc -->12.5
+    
+    * 'scale' es un argumento de bc que permite especificar el número de decimales
+      echo "scale=3; 10/3" | bc
+    
+    * num1=87.65
+      num2=89.20
+      echo "The total score is $(echo "num1 + num2" | bc)"
+      echo "The average score is $(echo "(num1 + num2)/2" | bc)"
+     
+    * var1=$(cat temp/Region_A) --> con esto se obtiene el valor el documento en cierta ubicacion
+      echo "The temperature is $var1"
+        
