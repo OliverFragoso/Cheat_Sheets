@@ -21,6 +21,7 @@ Arguments
 Basic Variables 
   - Assign variable
     var1="Moon" --> no debe tener espacios
+    temp_b="$(cat temps/region_B)" --> obteniendo la información de un documento en otra locación
   - Access variable
     echo $var1
   - '' single quotes: Shell interprets what is been literally
@@ -44,7 +45,7 @@ Basic Variables
                                       es más nuevo y tiene más ventajas
                                       
 Numeric Variables
-  - expr --> sirve para hacer aritmetica en la terminal. No sirve con decimale
+  - expr --> sirve para hacer aritmetica en la terminal. No sirve con decimales
     EXAMPLE:
       expr 1+4 --> 5
   - bc --> basic calculator, escribe 'quit' para salir
@@ -61,4 +62,85 @@ Numeric Variables
      
     * var1=$(cat temp/Region_A) --> con esto se obtiene el valor el documento en cierta ubicacion
       echo "The temperature is $var1"
-        
+ 
+ARRAYS
+  - Declara un arreglo en Bash
+    1) Arreglos vacíos:
+      declare -a <name_of_array>
+    2) Arreglos con elementos: no debe tener espacio antes ni después del signo '=', y la separación de de elementos se da con los espacios
+      <name_of_array>:(1 2 3)
+      
+  - Funciones de los arreglos
+    1) regresar todos los elementos en el arreglo:
+      echo ${array[@]}
+    2) dimensión del arreglo
+      echo ${#array[@]}
+    3) regresar un elemento específico
+      echo ${array[2]} --> la númeración empieza en cero as usual
+    4) cambiar el valor de un arreglo
+      array[0]=44
+      * NO usar el signo de '$' cuando se sobreescriba un valor --> $array[0]=44
+    5) slicing
+      echo ${array[@]:N:M}
+      * N: es el índice donde empieza
+      * M: la cantidad de elementos
+    6) agregar elementos
+       array+=(elementos)
+       
+  - Associative arrays (diccionarios): el Key es del tipo string y se asocia con un valor
+    * Sólo está disponible para Bash 4, para checar la versión del bash usa bash --version
+    
+    declare -A city_details #Declare first
+    city_details=([city_name]="Ney York " [Population]=1400000) #Agregar elementos
+    echo ${array[city_name]} #Acceder
+    echo ${!city_details[@]} #Obtener las keys del diccionario
+    
+IF STATEMENTS
+  if [ condition ]; then
+    #some code
+  else
+    #some code
+  fi
+  
+  * Spaces between square brackets and conditional elements inside (first line)
+  
+  ARITHMETIC IN IF STATEMENTS --> se tiene que usar doble parentesis en lugar de '[]'
+    if (($x > 5)); then
+      echo "$x is more that 5"
+    fi
+    
+   * Se puede usar [] pero se tienen que usar flags dentro en lugar de '>', '<', '=', '!='
+    -eq --> equal to
+    -ne --> not equal to
+    -lt --> less than
+    -le --> less than or equal to
+    -gt --> greater that
+    -ge --> greater than or equal to
+    
+      if [ $x -eq 5]; then 
+        echo "$x is more than 5"
+      fi
+   
+   *Other flags
+    -e if the file exits
+    -s if the file exits and has size greater tha zero
+    -r if the file exits and is readable
+    -w if the file exits and is writable
+    
+    AND and OR
+      * && --> and
+      * || --> or
+      
+      if [ condition ] && [ condition ]; then 
+        echo "some code"
+      fi
+      
+      if [[ $x -gt 5 && $x -le 7 ]]; then
+        echo "$x is less than 7"
+      fi
+      
+      if $(grep -q Hello words.txt); then
+        echo "Hello is inside!"
+      fi 
+    
+    
