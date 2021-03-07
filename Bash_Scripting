@@ -142,5 +142,71 @@ IF STATEMENTS
       if $(grep -q Hello words.txt); then
         echo "Hello is inside!"
       fi 
-    
+      
+  FOR LOOP
+    - normal syntax:
+        for x in 1 2 3 
+        do
+          echo $x
+        done
+    - ranges: {start..stop..increment}
+        for x in {1..5..2}
+        do
+          echo $x
+        done
+    - three expression syntax: ((x=a;x<=b;x+=c))
+        for ((x=2;x<=4;x+=2))
+        do
+          echo $x
+        done
+     - Glob expansions: permite usar los wild cards como '*' y acceder a todos los documentos
+                        de una carpeta 
+        for x in books/*
+        do
+          echo $x
+        done
+     - Shell within a shell
+        for x in $(ls book/ | grep -i 'air')
+        do
+          echo $x
+        done
+     - using if statements inside
+        # Create a FOR statement on files in directory
+          for file in robs_files/*.py 
+          do  
+        # Create IF statement using grep
+            if grep -q 'RandomForestClassifier' $file ; then
+        # Move wanted files to to_keep/ folder
+              mv $file to_keep/
+            fi
+          done
+     
+WHILE LOOP
+  - simple example
+      x=1
+      while [ $x -le 3 ];
+      do
+        echo $x
+        ((x+=1))
+      done
+      
+CASE STATEMENTS
+  - syntax
+    case 'something' in
+    pattern1)
+    command1;;
+    pattern2)
+    command2;;
+    *)
+    default command;;
+    esac
+  - example
+    case $(cat $1) in
+    *sydney*) -->los '*' son wildcards para indicar que puede estar en cualquier lugar la pabra sydney
+    mv $1 sydney/ ;;
+    *sydney*|*brisbane*) -->los '*' son wildcards para indicar que puede estar en cualquier lugar la pabra y '|' es un or
+    rm $1 ;;
+    *)
+    echo "No cities found" ;;
+    esac
     
