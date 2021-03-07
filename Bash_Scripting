@@ -114,7 +114,7 @@ IF STATEMENTS
     -ne --> not equal to
     -lt --> less than
     -le --> less than or equal to
-    -gt --> greater that
+    -gt --> greater than
     -ge --> greater than or equal to
     
       if [ $x -eq 5]; then 
