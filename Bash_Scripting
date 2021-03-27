@@ -210,3 +210,36 @@ CASE STATEMENTS
     echo "No cities found" ;;
     esac
     
+    
+FUNCTIONS
+  - syntax
+    function function_name(){
+      #function_code
+      return
+    }
+  - Example 1:
+    function print_hello(){
+      echo "Hello World"
+    }
+  - Example 2: Convert Farenheit to Celsius
+    temp_f=30
+    function convert_temp(){
+      temp_c=$(echo "scale=2;($temp_f-32)*5/9" | bc)
+      echo $temp_c
+    }
+    convert_temp # Call the function
+  - Example 3: Convert Farenheit to Celsius con argumentos en el file
+    function convert_temp(){
+      echo $(echo "scale=2;($1-32)*5/9" | bc)
+    }
+    converted=$(convert_temp 30)
+    echo "30F in Celsius is $converted"
+    
+  - Scope: por default todas las variables son "Global", para evita probelmas se pueden declarar "local"
+           a la función en la que estén
+    - syntax
+      function function_name(){
+        local variable_name=$1
+      }
+      function_name "ARG1" "ARG2"
+      echo $variable_name --> no debería imprimir nada
