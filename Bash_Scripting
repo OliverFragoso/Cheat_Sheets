@@ -243,3 +243,59 @@ FUNCTIONS
       }
       function_name "ARG1" "ARG2"
       echo $variable_name --> no debería imprimir nada
+    - Example 1: Variable Global
+      # Create a function
+        function get_number_wins () {
+
+      # Filter aggregate results by argument
+        win_stats=$(cat soccer_scores.csv | cut -d "," -f2 | egrep -v 'Winner'| sort | uniq -c | egrep "$1")
+
+        }
+
+      # Call the function with specified argument
+        get_number_wins "Etar"
+
+      # Print out the global variable
+        echo "The aggregated stats are: $win_stats"
+     
+    - Example 2: Local variable: sumar los elementos de un arreglo
+      # Create a function with a local base variable
+        function sum_array () {
+        local sum=0
+      # Loop through, adding to base variable
+        for number in "$@"
+        do
+        sum=$(echo "$sum + $number" | bc)
+        done
+      # Echo back the result
+        echo $sum
+        }
+      # Call function with array
+        test_array=(14 12 23.5 16 19.34)
+        total=$(sum_array "${test_array[@]}")
+        echo "The total sum of the test array is $total"
+        
+SCHEDULING SCRIPTS WITH CRON
+  - Para ver los cronjobs que tenemos programados se escribe en la temrinal
+    crontab -l
+  - Cronjob Structure
+    * * * * * 
+    | | | | |_ Day of the week (0 - 6) Sunday to saturday; 7 is also sunday
+    | | | |___ Month (1-12)
+    | | |_____ Day of month (1-31)
+    | |_______ Hour (0-23)
+    |_________ Minute(0-59)
+  - Para correr el script varias veces en el día o con cierto intervalo se utilizan
+      - las comas(,): para cierto intervalo de tiempo
+        15,30,45 * * * * --> correr el programa todos los días, todos los meses, etc. 
+                             a los 15 minutos, media hora y 45 minutos
+      - las diagonales (/): por cada 'X' incremento
+        */15 * * * * --> corre el programa cada 15 minutos, cada hora,  cada día, etc.
+  - agendar un script en CRON
+    1) in terminal type crontab -e to edit your list of cronjobs
+      - It may ask you what editor you want to use, nano is a good one
+    2) create the cronjob 
+      - * * * * * bash <file.sh> --> aquí debes poner el intervalo de tiempo deseado y el documento
+    3) exit the editor to save it
+      - Mac: ctrl + o then press enter + ctrl + x 
+
