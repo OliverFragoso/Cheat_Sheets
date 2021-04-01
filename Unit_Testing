@@ -1,0 +1,33 @@
+Write a simple unit test using pytest
+  1) Nombre "test_" el archivo a probar, Pytest al ver "test_" entiende que es un file a ser evaluado
+    - test_prueba
+  2) importar los test modules
+    - import pytest
+      from <nombre del file>(sin el .py) import <funcion>
+  3) escribir las "unit test" o nombre de la prueba que se le hará
+    - def test_.....():
+        assert ... --> todas la pruebas deben tene el assert
+        assert function(argumentos) == lo que debe regresar
+        assert function(argumentos) is None --> cuando debería regresar nada
+  4) Probar el unit test
+    - abrir la terminal y escribir: pytest test_... .py
+                                    !pytest test_... .py -->en IPuthon shell puede que lleve el signo
+                                                            de exclamación
+  - Example 1:
+    # Import the pytest package
+      import pytest
+
+    # Import the function convert_to_int()
+      from preprocessing_helpers import convert_to_int
+
+    # Complete the unit test name by adding a prefix
+      def test_on_string_with_one_comma():
+    # Complete the assert statement
+      assert convert_to_int("2,081")==2081
+      
+Understanding The output
+- . El puntito significa que sí pasó el test
+- F significa que falló
+  - '>' line that raised the exception
+  - 'E' contains details of the exception
+    - '+ where' dice lo que regresó cuando se corrió la función de prueba
