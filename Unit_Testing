@@ -150,3 +150,47 @@ TEST DRIVE DEVELOPMENT (TDD)
         actual = convert_to_int("23,816.92")
     # Complete the assert statement
         assert actual is None, "Expected: None, Actual: {0}".format(actual)
+
+Cómo organizar todos los Tests
+Test Class
+  - Syntaxis:
+    import pytest
+    from ... import..
+    
+    class TestNameClass(object): --> debe tenerla palabra "Test" al inicio y junto
+                              al nombre de la función
+      def test_nombre1(self): --> dentro de la clase van las distintas pruebas
+      def test_nombre2(self):
+      
+RUNNING TESTS
+  - En la terminal te situas en la carpeta que tenga el script con tus tests y escribes:
+    pytest -x --> "-x" indica que se detenga en cuento un test falle
+  - correr un pequeño grupo de tests
+    pytest <carpeta>/test_module.py
+  - Ser más específico y correr una clase en particular
+    pytest <carpeta>/test_module.py::<test class name>
+  - Todavía más específico, correr cierta test de una clase
+    pytest <carpeta>/test_module.py::<test class>::<unit test>
+  - Otra forma de correr test es usando keyword expressions (son como wildcards) y se
+    denotan por el uso de "-k"
+    pytest -k "pattern"
+    
+    Ejemplo: 
+    - pytest -k "<Test class name>" --> corre la clase que contenga ese nombre
+    - pytest -k "<part of a class name>" --> se escribe la mitad del nombre completo
+                                             de la clase y corre con eso, mientras sea
+                                             único el nombre de esa clase
+    - pytest -k "TestName and not test_module" --> corre los tests de esta clase excepto
+                                                   el unit test especificado
+                                                   
+EXPECTED FAILURES AND CONDITIONAL SKIPPING 
+  - Cuando se implementa primero los tests antes de crear las funciones del código (TDD)
+    se debe avisar al código que estas fallas ya se esperan y eso se hace con el decorator
+    "xfail"
+    
+    import test
+    class TestName(object):
+      @pytest.mark.xfail
+      test_unite_name(self):
+  
+    
