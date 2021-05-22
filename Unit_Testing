@@ -193,6 +193,7 @@ EXPECTED FAILURES AND CONDITIONAL SKIPPING
     class TestName(object):
       @pytest.mark.xfail(reason = "Using TDD, is not implemented yet")
       def test_unite_name(self):
+  - El decorador también se puede poner arriba de la clase
   
   - Avisar que el programa puede fallar bajo ciertas condiciones y no queremos que nos avise
     - Versiones de Python
@@ -208,6 +209,8 @@ EXPECTED FAILURES AND CONDITIONAL SKIPPING
       class TestName(object):
         @pytest.mark.skipif(sys.version_info > (2,7),reason = "requires Python 2.7")
         def testname(self):
+      
+      sys.platform --> Se utiliza para checar plataformas: Windows, Mac o Linux 
     
     - pytest -r[set of characters]: Mostrar la razón de la falla en el reporte
       - pytest -rs: tests que fueron skipeados cerca del final
