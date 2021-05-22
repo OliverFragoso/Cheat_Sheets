@@ -162,7 +162,8 @@ Test Class
       def test_nombre1(self): --> dentro de la clase van las distintas pruebas
       def test_nombre2(self):
       
-RUNNING TESTS
+RUNNING TESTS: En Ipython se le agrega un !, 
+               por ejemplo: !pytest
   - En la terminal te situas en la carpeta que tenga el script con tus tests y escribes:
     pytest -x --> "-x" indica que se detenga en cuento un test falle
   - correr un pequeño grupo de tests
