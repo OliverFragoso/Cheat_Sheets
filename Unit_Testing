@@ -216,5 +216,31 @@ EXPECTED FAILURES AND CONDITIONAL SKIPPING
       - pytest -rs: tests que fueron skipeados cerca del final
       - pytest -rx: tests que son xfailed con su razón 
       - pytest -rxs: se pueden combinar 
-      
+     
+CONTINUOUS INTEGRATION AND CODE COVERAGE
+  - Se usará en este caso Travis CI como servidor
+    1) Crear un settings file llamado ".travis.yml" en el root de nuestro repositorio
+      - Contenido (tiene 2 secciones):
+        language: python 
+        python:
+          - "3.6" #Ponemos la versión con la que estemos trabajando
+        install:
+          - pip install -e
+        script
+          - pytest tests
+    2) hacer push del archivo a GitHub
+      - git add .travis.yml
+      - git push origin master 
+    3) Instalar aplicación de Travis en GitHub
+      1) en la página principal ir a "Marketplace" 
+      2) buscar "Travis"
+      3) instalar la app
+      4) dar acceso a los repositorios y grupos correspondientes
+    4) Mostrar el status 
+      1) dar cick en "build passing"
+      2) seleccionar "Markdown" en el dropdown
+      3) pegar el código de markdown en el README file
+  - Code coverage
+    - Indica el % del código de la aplicación que se corre cuando se corre el test suite.
+      Entre mayor sea el % mejor
     
